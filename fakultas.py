@@ -28,7 +28,7 @@ def custom_subheading(text,color):
 
 def fakultas(options_faculty, option_keterangan):
     color = warnaFakultas[options_faculty]
-    st.image('logo/{}.png'.format(options_faculty))
+    st.image('logo/fif.png'.format(options_faculty))
     if option_keterangan == 'Bekerja':
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Waktu Tunggu Lulusan', 'Tingkat Perusahaan', 'Pendapatan', 'Sebaran Lokasi Kerja', 'Jabatan Pekerjaan', 'Respon Rate'])
 

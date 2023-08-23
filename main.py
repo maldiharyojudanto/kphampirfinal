@@ -346,6 +346,8 @@ allFakultas = {"FIF": ['S1 Informatika', 'S1 Teknologi Informasi', 'S2 Informati
             'FIT':['D3 Sistem Informasi', 'D3 Teknologi Komputer', 'D3 Sistem Informasi Akuntansi', 'D3 Manajemen Pemasaran', 'D3 Teknologi Telekomunikasi', 'D3 Rekayasa Perangkat Lunak Aplikasi', 'D3 Perhotelan', 'D4 Teknologi Rekayasa Multimedia']}
 listFakultas = allFakultas.keys()
 
+listFak = ['fif','fri','fte','feb','fkb','fik','fit']
+
 keterangan = ['Bekerja', 'Melanjutkan Pendidikan', 'Tidak Bekerja', 'Wiraswasta', 'Survey Pengguna']
 keterangan2 = ['Bekerja', 'Wiraswasta', 'Survey Pengguna']
 keterangan3 = ['Bekerja', 'Wiraswasta']
@@ -370,7 +372,7 @@ def main():
         elif selected == "Fakultas":
             options_faculty = st.selectbox(
                 'Pilih Fakultas:',
-                listFakultas, key="pilihFakultass")
+                listFak, key="pilihFakultass")
             options_keterangan = st.selectbox(
                 'Pilih Status:',
                 keterangan2, key="pilihStatus"
@@ -378,7 +380,7 @@ def main():
         elif selected == "Program Studi":
             options_faculty = st.selectbox(
                 'Pilih Fakultas:',
-                listFakultas, key="pilihFakultas")
+                listFak, key="pilihFakultas")
             options_prodi= st.selectbox(
                 'Pilih Prodi:',
                 allFakultas[options_faculty], key="pilihProdi")
@@ -399,7 +401,7 @@ def main():
         universitas(options_keterangan) # Panggil fungsi universitas
     if selected == "Fakultas":
         st.header('Selamat datang !')
-        fakultas(options_faculty, options_keterangan) # Panggil fungsi fakultas
+        fakultas(logofak, options_faculty, options_keterangan) # Panggil fungsi fakultas
     if selected == "Program Studi":
         st.header('Selamat datang !')
         programstudi(options_faculty, options_prodi, options_keterangan) # Panggil fungsi program studi

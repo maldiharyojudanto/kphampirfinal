@@ -38,8 +38,6 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
         with tab1:
             custom_subheading("Waktu Tunggu Lulusan",color)
             st.image('fig/waktu_tunggu_{}.png'.format(options_prodi))
-            st.write(st.session_state['new_dataframe'])
-            st.write(st.session_state['new_name'])
 
         with tab2:
             custom_subheading("Tingkat Perusahaan",color)

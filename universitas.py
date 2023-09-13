@@ -197,7 +197,15 @@ def universitas(keterangan):
             st.dataframe(df)
 
         with tab12:
-            df_w=filtering_tempat_wiraswasta(st.session_state['new_dataframe'])
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah dataframe (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
+            status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
+            df_namawiraswasta = data[data['Status Anda saat ini (F8)']==status[3]]
+
+            df_w=filtering_tempat_wiraswasta(df_namawiraswasta)
             pdloc=filtering_pdloc_wiraswasta(df_w)
             tempat_wiraswasta(df_w, pdloc)
 

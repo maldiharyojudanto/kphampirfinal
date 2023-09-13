@@ -62,11 +62,11 @@ def fakultas(options_faculty, option_keterangan):
             st.image('fig/respon_rate_{}.png'.format(options_faculty))
     
     elif option_keterangan == 'Wiraswasta':
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
             'Frekuensi', 'Sebaran Sektor Pekerjaan', 'Sebaran Kesesuaian Tingkat Pendidikan',
             'Sebaran Gaji', 'Sebaran Posisi Jabatan', 'Waktu Tunggu', 'Tempat Wirausaha',
             'Status Perusahaan (Hukum/NonHukum)', 'Status Perusahaan (Nasional/Multi)',
-            'Top Wiraswasta', 'Nama Perusahaan'])
+            'Top Wiraswasta', 'Nama Perusahaan', 'Generate Map (Contoh Session)'])
         
         with tab1:
             custom_subheading("Frekuensi",color)

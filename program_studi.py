@@ -284,7 +284,7 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
                 st.write("Alumni dari program studi {} :red[tidak ada yang menjadi wiraswasta] :cry:".format(options_prodi))
         
         with tab12:
-            custom_subheading("Generate (Contoh Session)")
+            custom_subheading("Generate (Contoh Session)", color)
             if st.session_state['new_dataframe'] is not None:
                 data = st.session_state['new_dataframe']
                 st.success('Berikut adalah hasil generate plot (menggunakan session)')

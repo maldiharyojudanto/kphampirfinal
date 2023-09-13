@@ -296,7 +296,7 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             # sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta)
 
             df_w=filtering_tempat_wiraswasta(df_wiraswasta)
-            x = filtering_pdloc_wiraswasta_prodi(df_w, k)
+            x = filtering_pdloc_wiraswasta_prodi(df_w, options_prodi)
             tempat_wiraswasta_prodi(df_w, x)
 
     elif option_keterangan == "Survey Pengguna":

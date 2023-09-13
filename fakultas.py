@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+from gen_datvis_fakultas import sebaran_sektor_pekerjaan_wiraswasta_fakultas
 
 warnaFakultas = {"FIF": "#B28D35",
             "FRI": "#0B6623",
@@ -137,6 +138,18 @@ def fakultas(options_faculty, option_keterangan):
             df = df.rename(columns={"index": "Nama Perusahaan/Usaha", "Nama Perusahaan/Usaha Anda ? (F5b)": "Jumlah"})
             st.write("Nama wiraswasta dan banyaknya alumni yang bekerja disana berdasarkan fakultas {}".format(options_faculty))
             st.dataframe(df)
+
+        with tab12:
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah dataframe (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
+            status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
+            df_wiraswasta = data[data['Status Anda saat ini (F8)']==status[3]]
+
+            dataf=df_wiraswasta[df_wiraswasta['Fakultas']==options_faculty]['Sektor tempat anda bekerja.1'].value_counts()
+            sebaran_sektor_pekerjaan_wiraswasta_fakultas(dataf, options_faculty, 12, (8,8))
 
     elif option_keterangan == "Survey Pengguna":
         custom_subheading("Survey Pengguna", color)

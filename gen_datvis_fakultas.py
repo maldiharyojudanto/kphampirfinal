@@ -284,7 +284,8 @@ def sebaran_sektor_pekerjaan_wiraswasta_fakultas(df_wiraswasta, var, fontsz, fig
   for spine in ['top', 'right', 'left']:
     ax.spines[spine].set_visible(False)
   plt.tight_layout()
-  plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-fak-{}.png'.format(var), dpi=100, transparent=True)
+  # plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-fak-{}.png'.format(var), dpi=100, transparent=True)
+  st.pyplot(fig)
 
 def sebaran_kesesuaian_pendidikan_wiraswasta_fakultas(df_wiraswasta, var):
   tag='Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15).1'

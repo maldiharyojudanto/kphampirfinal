@@ -431,7 +431,8 @@ def tempat_wiraswasta_prodi(df_wiraswasta,dloc,var): #LEVEL PRODI
   for spine in ['top', 'right', 'left']:
     ax2.spines[spine].set_visible(False)
     ax.spines[spine].set_visible(False)
-  plt.savefig('fig/sebaran-lokasi-perusahaan-wiraswasta-prodi-{}.png'.format(var), bbox_inches='tight', dpi=300, transparent=True)
+  # plt.savefig('fig/sebaran-lokasi-perusahaan-wiraswasta-prodi-{}.png'.format(var), bbox_inches='tight', dpi=300, transparent=True)
+  st.pyplot(fig)
 
 def status_perusahaan_wiraswasta_prodi(df_wiraswasta, var): # LEVEL FAKULTAS
   prodi = list(df_wiraswasta[df_wiraswasta['Program Studi']==var]['Apa status usaha anda?'].unique())

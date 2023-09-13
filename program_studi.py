@@ -297,7 +297,7 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
 
             df_w=filtering_tempat_wiraswasta(df_wiraswasta)
             x = filtering_pdloc_wiraswasta_prodi(df_w, options_prodi)
-            tempat_wiraswasta_prodi(df_w, x)
+            tempat_wiraswasta_prodi(df_w, x, options_prodi)
 
     elif option_keterangan == "Survey Pengguna":
         custom_subheading("Survey Pengguna", color)

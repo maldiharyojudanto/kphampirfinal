@@ -20,14 +20,42 @@ from math import ceil
 import math
 # from model_colab import plot_overall
 
+if 'new_dataframe' not in st.session_state:
+    st.session_state['new_dataframe'] = None
+    
+if 'new_name' not in st.session_state:
+    st.session_state['new_name'] = None
+
+if 'new_dataframepop' not in st.session_state:
+    st.session_state['new_dataframepop'] = None
+
+def upload():
+    new_dataframe = st.file_uploader("Upload your file here...", type=['xlsx'])
+
+    if new_dataframe is not None:
+        # Use CSS to hide the output names
+        fullname = new_dataframe.name
+        new_name = fullname.rsplit('.',1)[0]
+        # st.write(new_name)
+        new_df = pd.read_excel(new_dataframe, sheet_name='Sheet1')
+        new_dfpop = pd.read_excel(new_dataframe, sheet_name='Sheet2')
+        # st.write(new_dataframe)
+        st.session_state['new_name'] = new_name
+        st.session_state['new_dataframe'] = new_df
+        st.session_state['new_dataframepop'] = new_dfpop
+        st.success("Upload file berhasil!")
+        
 def is_folder_empty(path):
    return len(os.listdir(path)) == 0
 
 path = 'fig'
 if is_folder_empty(path):
-    # Import data & Preprocessing data
-    data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
-    datapop = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet2')
+    if st.session_state['new_dataframe'] is not None:
+        data = st.session_state['new_dataframe']
+        datapop = st.session_state['new_dataframepop']
+    else:
+        data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
+        datapop = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet2')
     survey = pd.read_excel('data/survey-pengguna-2022.xlsx', sheet_name='Master')
     pop_dict = dict(zip(datapop['Program Studi'], datapop['Populasi']))
     ##########################################
@@ -172,21 +200,12 @@ if is_folder_empty(path):
     df_wiraswasta.drop(indx, inplace=True)
     st.write('Jumlah Baris dengan Status Wiraswasta',len(df_wiraswasta))
     prodi_wiraswasta = list(df_wiraswasta['Program Studi'].unique())
-
-    df_wiraswasta.rename(columns={
-        df_wiraswasta.columns[77]: 'Sektor tempat anda berwirausaha',
-        df_wiraswasta.columns[76]: 'Tingkat pendidikan apa yang paling tepat/sesuai dengan wirausaha anda?',
-        df_wiraswasta.columns[75]: 'Jika wirausaha saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya?',
-        df_wiraswasta.columns[58]: 'Posisi di wirausaha anda saat ini',
-        df_wiraswasta.columns[78]: 'Berapa pendapatan yang anda peroleh dari wirausaha',
-        df_wiraswasta.columns[66]: 'Kapan anda memulai berwirausaha'
-        },inplace=True)
     
     # tidak ada lulusan dari prodi S1 Teknologi Informasi yang menjadi Wiraswasta
     prodi_wiraswasta = df_wiraswasta['Program Studi'].unique()
 
-    df_wiraswasta.loc[df4['Kapan anda memulai berwirausaha'] < 0, 'Kapan anda memulai berwirausaha'] = 0
-    df_wiraswasta = df_wiraswasta[df_wiraswasta['Kapan anda memulai berwirausaha'] <= 32]
+    df_wiraswasta.loc[df4['Kapan anda memulai bekerja.1'] < 0, 'Kapan anda memulai bekerja.1'] = 0
+    df_wiraswasta = df_wiraswasta[df_wiraswasta['Kapan anda memulai bekerja.1'] <= 32]
     
     from math import ceil
     upbound = 30
@@ -199,14 +218,14 @@ if is_folder_empty(path):
     for i,k in enumerate(prodi):
         uplimit = upbound
         ind = 0
-        idxv = data4[(data4['Kapan anda memulai berwirausaha'].isna()) & (data4['Program Studi']==k)].index
-        idxv2 = data4[(data4['Kapan anda memulai berwirausaha'].notna()) & (data4['Program Studi']==k)].index
-        rep = np.array(data4.loc[idxv2,'Kapan anda memulai berwirausaha'])
-        while (data4[data4['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean()>10):
-            # print(data2[data2['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean())
-            indexv = data4[ (data4['Program Studi'] == k) & (data4['Kapan anda memulai berwirausaha'] > uplimit) ].index
+        idxv = data4[(data4['Kapan anda memulai bekerja.1'].isna()) & (data4['Program Studi']==k)].index
+        idxv2 = data4[(data4['Kapan anda memulai bekerja.1'].notna()) & (data4['Program Studi']==k)].index
+        rep = np.array(data4.loc[idxv2,'Kapan anda memulai bekerja.1'])
+        while (data4[data4['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean()>10):
+            # print(data2[data2['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean())
+            indexv = data4[ (data4['Program Studi'] == k) & (data4['Kapan anda memulai bekerja.1'] > uplimit) ].index
             # data2.drop(indexv[0:ceil(len(indexv)/3)] , inplace=True) # remove
-            data4.loc[indexv,'Kapan anda memulai berwirausaha'] = data4[data4['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean()
+            data4.loc[indexv,'Kapan anda memulai bekerja.1'] = data4[data4['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean()
             uplimit = uplimit-1
             ind = ind+1
     ###########################################################################################
@@ -260,7 +279,7 @@ if is_folder_empty(path):
     for i,k in enumerate(fakultas):
         frekuensi_wiraswasta_fakultas(df_wiraswasta, k)
     for i,k in enumerate(fakultas):
-        data=df_wiraswasta[df_wiraswasta['Fakultas']==k]['Sektor tempat anda berwirausaha'].value_counts()
+        data=df_wiraswasta[df_wiraswasta['Fakultas']==k]['Sektor tempat anda bekerja.1'].value_counts()
         sebaran_sektor_pekerjaan_wiraswasta_fakultas(data, k, 12, (8,8))
     for i,k in enumerate(fakultas):
         sebaran_kesesuaian_pendidikan_wiraswasta_fakultas(df_wiraswasta, k)
@@ -319,7 +338,7 @@ if is_folder_empty(path):
         pop_dict_pordi = populasirespond[k]
         frekuensi_wiraswasta_prodi(df_wiraswasta, k, pop_dict_pordi)
     for i,k in enumerate(prodi_wiraswasta):
-        data=df_wiraswasta[df_wiraswasta['Program Studi']==k]['Sektor tempat anda berwirausaha'].value_counts()
+        data=df_wiraswasta[df_wiraswasta['Program Studi']==k]['Sektor tempat anda bekerja.1'].value_counts()
         sebaran_sektor_pekerjaan_wiraswasta_prodi(data, k, 12, (8,8))
     for i,k in enumerate(prodi_wiraswasta):
         sebaran_kesesuaian_pendidikan_wiraswasta_prodi(df_wiraswasta, k)
@@ -350,15 +369,20 @@ keterangan = ['Bekerja', 'Melanjutkan Pendidikan', 'Tidak Bekerja', 'Wiraswasta'
 keterangan2 = ['Bekerja', 'Wiraswasta', 'Survey Pengguna']
 keterangan3 = ['Bekerja', 'Wiraswasta']
 
-
 def logo():
-     # Menambahkan gambar di sebelah judul
+    if st.session_state['new_name'] is not None:
+        nama = st.session_state['new_name']
+    if st.session_state['new_name'] is None:
+        nama = 'Tracer Study 2022'
     logo_url = 'https://edurank.org/assets/img/uni-logos/telkom-university-logo.png'
     st.markdown(
         f'<img src="{logo_url}" alt="Logo Universitas" width="180" align="left">'
-        '<h1 style="display: inline-block; margin-left: 20px;width: 400px;height:200px">Laporan Tracer Study Tahun 2022 Telkom University</h1>',
+        f'<h1 style="display: inline-block; margin-left: 20px;width: 400px;height:200px">Laporan {nama} Telkom University</h1>',
         unsafe_allow_html=True
     )
+
+if "disabled" not in st.session_state:
+    st.session_state.disabled = False
 
 def main():
     with st.sidebar:
@@ -366,7 +390,8 @@ def main():
         if selected == "Universitas":
             options_keterangan= st.selectbox(
                 'Pilih Status:',
-                keterangan) 
+                keterangan, disabled=st.session_state.disabled) 
+            agree = st.checkbox('Upload dataframe baru?', key='disabled')
         elif selected == "Fakultas":
             options_faculty = st.selectbox(
                 'Pilih Fakultas:',
@@ -396,7 +421,14 @@ def main():
     # Jika salah satu item di option menu dipilih
     if selected == "Universitas":
         logo()
-        universitas(options_keterangan) # Panggil fungsi universitas
+        if agree:
+            upload()
+            if st.session_state['new_name'] is not None:
+                st.write(st.session_state['new_name'])
+                st.write(st.session_state['new_dataframe'])
+                st.write(st.session_state['new_dataframepop'])
+        else:
+            universitas(options_keterangan) # Panggil fungsi universitas
     if selected == "Fakultas":
         st.header('Selamat datang !')
         fakultas(options_faculty, options_keterangan) # Panggil fungsi fakultas
@@ -406,4 +438,4 @@ def main():
 
 # Menampilkan/hasil
 if __name__ == '__main__':
-    main() 
+    main()

@@ -289,7 +289,7 @@ def sebaran_sektor_pekerjaan_wiraswasta_prodi(df_wiraswasta, var, fontsz, figsz)
   plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-prodi-{}.png'.format(var), dpi=100, transparent=True)
 
 def sebaran_kesesuaian_pendidikan_wiraswasta_prodi(df_wiraswasta, var): # LEVEL PRODI
-  tag='Tingkat pendidikan apa yang paling tepat/sesuai dengan wirausaha anda?'
+  tag='Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15).1'
   datavar = df_wiraswasta[df_wiraswasta['Program Studi']==var][tag].value_counts()
   # order = [1,0,2,3]
   fig, ax=plt.subplots(figsize=(20,10))
@@ -301,19 +301,21 @@ def sebaran_kesesuaian_pendidikan_wiraswasta_prodi(df_wiraswasta, var): # LEVEL 
     ax.spines[spine].set_visible(False)
   plt.tight_layout()
   plt.savefig('fig/sebaran-tingkat-kesesuaian-pendidikan-wiraswasta-prodi-{}.png'.format(var), dpi=100, transparent=True)
-
-  ques = ['Q{}'.format(k) for k in range(1,len(datavar))]
+  
+  tag2 = 'Jika pekerjaan saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya ? (F16).1'
+  frek_pertanyan = df_wiraswasta[df_wiraswasta['Program Studi']==var][tag2].value_counts()
+  ques = ['Q{}'.format(k) for k in range(1,len(frek_pertanyan))]
   ques2 = ['Q1: Prospek karir lebih baik', 'Q2: Belum mendapat yang lebih sesuai', 'Q3:Lebih menarik', 'Q4:Lebih menyukai karir saat ini', 'Q5:Pengalaman kerja', 'Q6: Lebih terjamin', 'Q7: Lokasi lebih dekat rumah', 'Q8:Pendapatan tinggi','Q9:Waktu lebih fleksibel', 'Q10:Dipromosikan', 'Q11:Lebih menjamin kebutuhan keluarga.']
   fig, ax=plt.subplots(figsize=(20,10))
-  ax.bar(np.arange(len(ques)), datavar.values[1:], edgecolor='black', color='blue')
+  ax.bar(np.arange(len(ques)), frek_pertanyan.values[1:], edgecolor='black', color='blue')
   xmin, xmax, ymin, ymax = ax.axis()
-  _ = [ax.annotate(k, ((xmax+xmin)/4,ymax-(i+1)*(ymax-ymin)/20)) for i,(k,c) in enumerate(zip(ques2,datavar.values[1:]))]
+  _ = [ax.annotate(k, ((xmax+xmin)/4,ymax-(i+1)*(ymax-ymin)/20)) for i,(k,c) in enumerate(zip(ques2,frek_pertanyan.values[1:]))]
   plt.xticks(np.arange(len(ques)),ques)
   plt.tight_layout()
   plt.savefig('fig/sebaran-pertanyaan-kesesuaian-pendidikan-wiraswasta-prodi-{}.png'.format(var), dpi=100, transparent=True)
 
 def sebaran_gaji_wiraswasta_prodi(df_wiraswasta, var, fontsz): # LEVEL PRODI
-  tag = 'Berapa pendapatan yang anda peroleh dari wirausaha'
+  tag = 'Berapa pendapatan yang anda peroleh.1'
   salary = df_wiraswasta[df_wiraswasta['Program Studi']==var][tag].value_counts()
   labels=['< 4.000.000', '4.000.000 - 7.000.000', '7.000.000 - 10.000.000', '10.000.000 - 15.000.000', '>15.000.000']
   ref = [4000000, 5500000, 8500000, 12500000, 20000000]
@@ -339,7 +341,7 @@ def sebaran_gaji_wiraswasta_prodi(df_wiraswasta, var, fontsz): # LEVEL PRODI
 
 def sebaran_posisi_jabatan_wiraswasta_prodi(df_wiraswasta, var, fontsz): # LEVEL FAKULTAS
   fig, ax = plt.subplots(figsize=(8,6))
-  tag='Posisi di wirausaha anda saat ini'
+  tag='Posisi/jabatan anda saat ini (F5c).1'
   posisi=df_wiraswasta[df_wiraswasta['Program Studi']==var][tag].value_counts()
   ax.barh(posisi.keys(), posisi.values, color='salmon', edgecolor='black')
   ax.set_yticklabels(posisi.keys(),fontsize=12)
@@ -461,7 +463,7 @@ def status_perusahaan_wiraswasta_prodi(df_wiraswasta, var): # LEVEL FAKULTAS
   plt.savefig('fig/perusahaan-nasional-multinasional-wiraswasta-prodi-{}.png'.format(var), dpi=300, transparent=True)
 
 def top_perusahaan_wiraswasta_prodi(df_wiraswasta, var): # PROGRAM STUDI
-  tag1='Posisi di wirausaha anda saat ini'
+  tag1='Posisi/jabatan anda saat ini (F5c).1'
   tag2='Nama Perusahaan/Usaha Anda ? (F5b)'
   comment_words = ''
   stopwords = set(STOPWORDS)

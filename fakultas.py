@@ -79,9 +79,9 @@ def fakultas(options_faculty, option_keterangan):
 
         with tab3:
             custom_subheading("Sebaran Kesesuaian Tingkat Pendidikan",color)
-            st.write('Tingkat pendidikan apa yang paling tepat/sesuai dengan wirausaha anda?')
+            st.write('Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15)')
             st.image('fig/sebaran-tingkat-kesesuaian-pendidikan-wiraswasta-fak-{}.png'.format(options_faculty))
-            st.write('Jika wirausaha saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya?')
+            st.write('Jika pekerjaan saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya ? (F16)')
             st.image('fig/sebaran-pertanyaan-kesesuaian-pendidikan-wiraswasta-fak-{}.png'.format(options_faculty))
         
         with tab4:
@@ -121,7 +121,11 @@ def fakultas(options_faculty, option_keterangan):
             custom_subheading("Nama Perusahaan", color)
             import pandas as pd # library pandas (mengolah data)
             import numpy as np # library untuk manipulasi data
-            data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1') # membaca dataset Tracer Final 2022.xlsx sheet 1
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah dataframe (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
 
             status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
             df_namawiraswasta = data[data['Status Anda saat ini (F8)']==status[3]] # yang statusnya 'Wiraswasta'

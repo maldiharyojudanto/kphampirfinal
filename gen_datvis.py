@@ -678,8 +678,8 @@ def frekuensi_wiraswasta(data, df_wiraswasta): # LEVEL UNIVERSITAS
   plt.savefig('fig/frekuensi-wiraswasta-prodiuniv.png', dpi=300, transparent=True)
 
 def sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
-  sektor = list(df_wiraswasta['Sektor tempat anda berwirausaha'].unique())
-  frek = df_wiraswasta['Sektor tempat anda berwirausaha'].value_counts()
+  sektor = list(df_wiraswasta['Sektor tempat anda bekerja.1'].unique())
+  frek = df_wiraswasta['Sektor tempat anda bekerja.1'].value_counts()
   fig, ax = plt.subplots(1,1, figsize=(20,10))
   plt.bar(frek.keys(),frek.values, color='lightcoral', edgecolor='black')
   # plt.title('Sektor Wiraswasta Alumni Universitas', size=16)
@@ -693,7 +693,7 @@ def sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-univ.png', dpi=300, transparent=True)
 
 def sebaran_kesesuaian_pendidikan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
-  frek_tingkat = df_wiraswasta['Tingkat pendidikan apa yang paling tepat/sesuai dengan wirausaha anda?'].value_counts()
+  frek_tingkat = df_wiraswasta['Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15).1'].value_counts()
   order = [1,0,2,3]
   fig, ax=plt.subplots(figsize=(20,10))
   # plt.suptitle('Kesesuaian Pendidikan Alumni Wiraswasta Level Universitas dan Alasan Tidak Sesuai',size=18)
@@ -706,7 +706,7 @@ def sebaran_kesesuaian_pendidikan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   plt.tight_layout()
   plt.savefig('fig/sebaran-tingkat-kesesuaian-pendidikan-wiraswasta-univ.png', dpi=100, transparent=True)
 
-  frek_pertanyan = df_wiraswasta['Jika wirausaha saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya?'].value_counts()
+  frek_pertanyan = df_wiraswasta['Jika pekerjaan saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya ? (F16).1'].value_counts()
   fig, ax=plt.subplots(figsize=(20,10))
   ques = ['Q{}'.format(k) for k in range(1,len(frek_pertanyan))]
   ques2 = ['Q1: Prospek karir lebih baik', 'Q2: Belum mendapat yang lebih sesuai', 'Q3: Lebih menarik', 'Q4: Lebih menyukai karir saat ini', 'Q5: Pengalaman kerja', 'Q6: Lebih terjamin', 'Q7: Lokasi lebih dekat rumah', 'Q8: Pendapatan tinggi','Q9: Waktu lebih fleksibel', 'Q10: Dipromosikan', 'Q11: Lebih menjamin kebutuhan keluarga.']
@@ -718,7 +718,7 @@ def sebaran_kesesuaian_pendidikan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   plt.savefig('fig/sebaran-pertanyaan-kesesuaian-pendidikan-wiraswasta-univ.png', dpi=100, transparent=True)
 
 def sebaran_gaji_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
-  salary = df_wiraswasta['Berapa pendapatan yang anda peroleh dari wirausaha'].value_counts()
+  salary = df_wiraswasta['Berapa pendapatan yang anda peroleh.1'].value_counts()
   labels=['< 4.000.000', '4.000.000 - 7.000.000', '7.000.000 - 10.000.000', '10.000.000 - 15.000.000', '>15.000.000']
   ref = [4000000, 5500000, 8500000, 12500000, 20000000]
   midpoint = np.zeros(len(salary.keys()))
@@ -741,7 +741,7 @@ def sebaran_gaji_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   plt.savefig('fig/sebaran-gaji-wiraswasta-univ.png', dpi=100, transparent=True)
 
   pstudi_wiraswasta = list(df_wiraswasta['Program Studi'].unique())
-  term ='Berapa pendapatan yang anda peroleh dari wirausaha'
+  term ='Berapa pendapatan yang anda peroleh.1'
   data3=df_wiraswasta[df_wiraswasta[term].notna()].copy()
   ### Per program Studi'
   # for fak in fakultas.keys():
@@ -808,7 +808,7 @@ def sebaran_gaji_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   # data3[term]
 
 def sebaran_posisi_jabatan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
-  posisi=df_wiraswasta['Posisi di wirausaha anda saat ini'].value_counts()
+  posisi=df_wiraswasta['Posisi/jabatan anda saat ini (F5c).1'].value_counts()
   fig, ax = plt.subplots(figsize=(8,6))
   # plt.suptitle('Sebaran Posisi dan Gaji Level Universitas', fontsize=16)
   ax.barh(posisi.keys(), posisi.values, color='salmon', edgecolor='black')
@@ -823,8 +823,8 @@ def waktu_tunggu_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
 
   # _ = [dis]
   x = list(prodi_wiraswasta)
-  y = [np.array(df_wiraswasta.loc[df_wiraswasta['Program Studi']==k,'Kapan anda memulai berwirausaha']).mean() for k in x]
-  y_error = [np.array(df_wiraswasta.loc[df_wiraswasta['Program Studi']==k,'Kapan anda memulai berwirausaha']).std() for k in x]
+  y = [np.array(df_wiraswasta.loc[df_wiraswasta['Program Studi']==k,'Kapan anda memulai bekerja.1']).mean() for k in x]
+  y_error = [np.array(df_wiraswasta.loc[df_wiraswasta['Program Studi']==k,'Kapan anda memulai bekerja.1']).std() for k in x]
 
   ax.errorbar(x, y, linestyle="None", yerr = y_error, fmt="or", markersize=9, capsize=3, ecolor="b", elinewidth=3)
   ax.set_ylim(-2.5,30)
@@ -988,7 +988,7 @@ def status_perusahaan_wiraswasta(df_wiraswasta, tag1, tag2): # LEVEL UNIVERSITAS
   plt.savefig('fig/perusahaan-nasional-multinasional-wiraswasta-univ.png', dpi=300, transparent=True)
 
 def top_perusahaan_wiraswasta(df_wiraswasta):
-  tag1='Posisi di wirausaha anda saat ini'
+  tag1='Posisi/jabatan anda saat ini (F5c).1'
   tag2='Nama Perusahaan/Usaha Anda ? (F5b)'
   comment_words = ''
   stopwords = set(STOPWORDS)

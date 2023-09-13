@@ -38,6 +38,8 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
         with tab1:
             custom_subheading("Waktu Tunggu Lulusan",color)
             st.image('fig/waktu_tunggu_{}.png'.format(options_prodi))
+            st.write(st.session_state['new_dataframe'])
+            st.write(st.session_state['new_name'])
 
         with tab2:
             custom_subheading("Tingkat Perusahaan",color)
@@ -95,9 +97,9 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             if not os.path.exists(path_frek):
                 st.write("Alumni dari program studi {} :red[tidak ada yang menjadi wiraswasta] :cry:".format(options_prodi))
             else:
-                st.write('Tingkat pendidikan apa yang paling tepat/sesuai dengan wirausaha anda?')
+                st.write('Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15)')
                 st.image('fig/sebaran-tingkat-kesesuaian-pendidikan-wiraswasta-prodi-{}.png'.format(options_prodi))
-                st.write('Jika wirausaha saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya?')
+                st.write('Jika pekerjaan saat ini tidak sesuai dengan pendidikan anda, mengapa anda mengambilnya ? (F16)')
                 st.image('fig/sebaran-pertanyaan-kesesuaian-pendidikan-wiraswasta-prodi-{}.png'.format(options_prodi))
         
         with tab4:
@@ -109,15 +111,17 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
                 st.image('fig/sebaran-gaji-wiraswasta-prodi-{}.png'.format(options_prodi))
                 import pandas as pd # library pandas (mengolah data)
                 import numpy as np # library untuk manipulasi data
-                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1') # membaca dataset Tracer Final 2022.xlsx sheet 1
+                if st.session_state['new_dataframe'] is not None:
+                    data = st.session_state['new_dataframe']
+                    st.success('Berikut adalah proses generate grafik (menggunakan session)')
+                else:
+                    data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
 
                 status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
                 df_wiraswasta = data[data['Status Anda saat ini (F8)']==status[3]] # yang statusnya 'Wiraswasta'
                 # st.write("Maintenance")
 
-                df_wiraswasta.rename(columns={df_wiraswasta.columns[78]: 'Berapa pendapatan yang anda peroleh dari wirausaha'},inplace=True)
-
-                term ='Berapa pendapatan yang anda peroleh dari wirausaha'
+                term ='Berapa pendapatan yang anda peroleh.1'
                 data3=df_wiraswasta[df_wiraswasta[term].notna()].copy()
                 ### Per program Studi'
                 # for fak in fakultas.keys():
@@ -154,18 +158,18 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             custom_subheading("Waktu Tunggu",color)
             import pandas as pd # library pandas (mengolah data)
             import numpy as np # library untuk manipulasi data
-            data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1') # membaca dataset Tracer Final 2022.xlsx sheet 1
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah proses perhitungan waktu tunggu (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
 
             status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
             df_wiraswasta = data[data['Status Anda saat ini (F8)']==status[3]] # yang statusnya 'Wiraswasta'
             # st.write("Maintenance")
-
-            df_wiraswasta.rename(columns={
-                df_wiraswasta.columns[66]: 'Kapan anda memulai berwirausaha'
-                },inplace=True)
             
-            df_wiraswasta.loc[df_wiraswasta['Kapan anda memulai berwirausaha'] < 0, 'Kapan anda memulai berwirausaha'] = 0
-            df_wiraswasta = df_wiraswasta[df_wiraswasta['Kapan anda memulai berwirausaha'] <= 32]
+            df_wiraswasta.loc[df_wiraswasta['Kapan anda memulai bekerja.1'] < 0, 'Kapan anda memulai bekerja.1'] = 0
+            df_wiraswasta = df_wiraswasta[df_wiraswasta['Kapan anda memulai bekerja.1'] <= 32]
 
             from math import ceil
             upbound = 30
@@ -178,28 +182,28 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             for i,k in enumerate(prodi):
                 uplimit = upbound
                 ind = 0
-                idxv = data4[(data4['Kapan anda memulai berwirausaha'].isna()) & (data4['Program Studi']==k)].index
-                idxv2 = data4[(data4['Kapan anda memulai berwirausaha'].notna()) & (data4['Program Studi']==k)].index
-                rep = np.array(data4.loc[idxv2,'Kapan anda memulai berwirausaha'])
-                while (data4[data4['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean()>10):
-                    # print(data2[data2['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean())
-                    indexv = data4[ (data4['Program Studi'] == k) & (data4['Kapan anda memulai berwirausaha'] > uplimit) ].index
+                idxv = data4[(data4['Kapan anda memulai bekerja.1'].isna()) & (data4['Program Studi']==k)].index
+                idxv2 = data4[(data4['Kapan anda memulai bekerja.1'].notna()) & (data4['Program Studi']==k)].index
+                rep = np.array(data4.loc[idxv2,'Kapan anda memulai bekerja.1'])
+                while (data4[data4['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean()>10):
+                    # print(data2[data2['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean())
+                    indexv = data4[ (data4['Program Studi'] == k) & (data4['Kapan anda memulai bekerja.1'] > uplimit) ].index
                     # data2.drop(indexv[0:ceil(len(indexv)/3)] , inplace=True) # remove
-                    data4.loc[indexv,'Kapan anda memulai berwirausaha'] = data4[data4['Program Studi']==k]['Kapan anda memulai berwirausaha'].mean()
+                    data4.loc[indexv,'Kapan anda memulai bekerja.1'] = data4[data4['Program Studi']==k]['Kapan anda memulai bekerja.1'].mean()
                     uplimit = uplimit-1
                     ind = ind+1
             
-            if (len(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai berwirausaha']) == 0):
+            if (len(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai bekerja.1']) == 0):
                 st.write(":red[Tidak ada satupun alumni] pada program studi {} yang berwirausaha".format(options_prodi))
-            elif (len(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai berwirausaha']) > 1):
-                x = round(np.array(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai berwirausaha']).mean(),1)
+            elif (len(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai bekerja.1']) > 1):
+                x = round(np.array(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai bekerja.1']).mean(),1)
                 if x < 0:
                     a = ':smirk:'
                 else:
                     a = ':sunglasses:'
                 st.write("Alumni pada program studi {} mendapatkan pekerjaan rata-rata :red[{} bulan] setelah lulus {}".format(options_prodi,x,a))
             else:
-                x = int(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai berwirausaha'].values[0])
+                x = int(data4.loc[data4['Program Studi']==options_prodi,'Kapan anda memulai bekerja.1'].values[0])
                 st.write("Hanya ada :red[satu alumni] pada program studi {} yang berwirausaha dan alumni tersebut memulai wirausaha :red[{} bulan] setelah lulus".format(options_prodi,x))
             # st.image('fig/waktu-tunggu-wiraswasta-fak-{}.png'.format(options_faculty))
 
@@ -259,7 +263,11 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             custom_subheading("Nama Perusahaan", color)
             import pandas as pd # library pandas (mengolah data)
             import numpy as np # library untuk manipulasi data
-            data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1') # membaca dataset Tracer Final 2022.xlsx sheet 1
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah dataframe (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
 
             status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
             df_namawiraswasta = data[data['Status Anda saat ini (F8)']==status[3]] # yang statusnya 'Wiraswasta'

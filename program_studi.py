@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import os
+from gen_datvis import filtering_tempat_wiraswasta
+from gen_datvis_prodi import filtering_pdloc_wiraswasta_prodi, tempat_wiraswasta_prodi
 
 warnaProdi = {"S1 Informatika": "#B28D35","S1 Teknologi Informasi": "#B28D35", "S2 Informatika": "#B28D35",
             "S1 Teknik Industri": "#0B6623", "S1 Sistem Informasi": "#0B6623", "S2 Teknik Industri": "#0B6623",
@@ -67,11 +69,11 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
             st.image('fig/respon_rate_{}.png'.format(options_prodi))
     
     elif option_keterangan == "Wiraswasta":
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
             'Frekuensi', 'Sebaran Sektor Pekerjaan', 'Sebaran Kesesuaian Tingkat Pendidikan',
             'Sebaran Gaji', 'Sebaran Posisi Jabatan', 'Waktu Tunggu', 'Tempat Wirausaha',
             'Status Perusahaan (Hukum/NonHukum)', 'Status Perusahaan (Nasional/Multi)',
-            'Top Wiraswasta', 'Nama Perusahaan'])
+            'Top Wiraswasta', 'Nama Perusahaan', 'Generate (Contoh Session)'])
     
         with tab1:
             custom_subheading("Frekuensi",color)
@@ -280,6 +282,22 @@ def programstudi(options_faculty, options_prodi, option_keterangan):
                 st.dataframe(df)
             else:
                 st.write("Alumni dari program studi {} :red[tidak ada yang menjadi wiraswasta] :cry:".format(options_prodi))
+        
+        with tab12:
+            custom_subheading("Generate (Contoh Session)")
+            if st.session_state['new_dataframe'] is not None:
+                data = st.session_state['new_dataframe']
+                st.success('Berikut adalah hasil generate plot (menggunakan session)')
+            else:
+                data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
+            status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
+            df_wiraswasta = data[data['Status Anda saat ini (F8)']==status[3]]
+
+            # sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta)
+
+            df_w=filtering_tempat_wiraswasta(df_wiraswasta)
+            x = filtering_pdloc_wiraswasta_prodi(df_w, k)
+            tempat_wiraswasta_prodi(df_w, x)
 
     elif option_keterangan == "Survey Pengguna":
         custom_subheading("Survey Pengguna", color)

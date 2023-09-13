@@ -121,7 +121,7 @@ def universitas(keterangan):
             'Frekuensi', 'Sebaran Sektor Pekerjaan', 'Sebaran Kesesuaian Tingkat Pendidikan',
             'Sebaran Gaji', 'Sebaran Posisi Jabatan', 'Waktu Tunggu', 'Tempat Wirausaha',
             'Status Perusahaan (Hukum/NonHukum)', 'Status Perusahaan (Nasional/Multi)',
-            'Top Wiraswasta', 'Nama Perusahaan'])
+            'Top Wiraswasta', 'Nama Perusahaan', 'Generate Map (Contoh Session)'])
         
         with tab1:
             custom_subheading("Frekuensi")

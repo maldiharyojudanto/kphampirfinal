@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from gen_datvis import filtering_tempat_wiraswasta, filtering_pdloc_wiraswasta, tempat_wiraswasta
+from gen_datvis import sebaran_sektor_pekerjaan_wiraswasta
 
 def custom_subheading(text):
     # Definisikan CSS inline untuk menyesuaikan tampilan teks
@@ -203,11 +203,9 @@ def universitas(keterangan):
             else:
                 data = pd.read_excel('data/Tracer Final 2022.xlsx', sheet_name='Sheet1')
             status = list(data['Status Anda saat ini (F8)'].unique()) # mencari nilai
-            df_namawiraswasta = data[data['Status Anda saat ini (F8)']==status[3]]
+            df_wiraswasta = data[data['Status Anda saat ini (F8)']==status[3]]
 
-            df_w=filtering_tempat_wiraswasta(df_namawiraswasta)
-            pdloc=filtering_pdloc_wiraswasta(df_w)
-            tempat_wiraswasta(df_w, pdloc)
+            sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta)
 
     elif keterangan == "Survey Pengguna":
         custom_subheading("Survey Pengguna")

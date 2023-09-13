@@ -690,7 +690,8 @@ def sebaran_sektor_pekerjaan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   plt.yticks(fontsize=11)
   plt.ylim(0,150)
   plt.tight_layout()
-  plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-univ.png', dpi=300, transparent=True)
+  # plt.savefig('fig/sebaran-sektor-pekerjaan-wiraswasta-univ.png', dpi=300, transparent=True)
+  st.pyplot(fig)
 
 def sebaran_kesesuaian_pendidikan_wiraswasta(df_wiraswasta): # LEVEL UNIVERSITAS
   frek_tingkat = df_wiraswasta['Tingkat pendidikan apa yang paling tepat/sesuai dengan pekerjaan anda saat ini ? (F15).1'].value_counts()
@@ -958,7 +959,7 @@ def tempat_wiraswasta(df_wiraswasta,dloc): #LEVEL UNIV
   for spine in ['top', 'right', 'left']:
     ax2.spines[spine].set_visible(False)
     ax.spines[spine].set_visible(False)
-  plt.show()
+  plt.savefig('fig/sebaran-lokasi-perusahaan-wiraswasta-univ.png', bbox_inches='tight', dpi=300, transparent=True)
 
 def status_perusahaan_wiraswasta(df_wiraswasta, tag1, tag2): # LEVEL UNIVERSITAS
   hukumnon = list(df_wiraswasta[tag1].unique())

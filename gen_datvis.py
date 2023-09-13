@@ -958,7 +958,7 @@ def tempat_wiraswasta(df_wiraswasta,dloc): #LEVEL UNIV
   for spine in ['top', 'right', 'left']:
     ax2.spines[spine].set_visible(False)
     ax.spines[spine].set_visible(False)
-  plt.savefig('fig/sebaran-lokasi-perusahaan-wiraswasta-univ1.png', bbox_inches='tight', dpi=300, transparent=True)
+  plt.show()
 
 def status_perusahaan_wiraswasta(df_wiraswasta, tag1, tag2): # LEVEL UNIVERSITAS
   hukumnon = list(df_wiraswasta[tag1].unique())

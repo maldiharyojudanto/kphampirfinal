@@ -404,8 +404,11 @@ def tempat_wiraswasta_prodi(df_wiraswasta,dloc,var): #LEVEL PRODI
   dloc['labels_enc'] = pd.factorize(dloc['name'])[0]
 
   if len(dloc['pop']) == 1:
-    bubble = dloc['pop']*1000
-    alp = 0.9
+    bubble = dloc['pop']*10000
+    alp = 0.7
+  elif len(dloc['pop']) < 10:
+    bubble = (dloc['pop']-dloc['pop'].min())/(dloc['pop'].max()-dloc['pop'].min())*10000
+    alp = 0.7
   else:
     bubble = (dloc['pop']-dloc['pop'].min())/(dloc['pop'].max()-dloc['pop'].min())*10000
     alp = 0.7
@@ -420,13 +423,14 @@ def tempat_wiraswasta_prodi(df_wiraswasta,dloc,var): #LEVEL PRODI
       zorder=5
   )
   # plt.show()
+  ax.set_title('{}'.format(var))
   ax2 = fig.add_axes([0.705, 0.51, 0.18, 0.18])
-  province = df_wiraswasta[(df_wiraswasta['Daerah Valid'] == 1) & (df_wiraswasta['Program Studi'] == var)][tag].value_counts()
-  province=province[province.values>=20]
+  province = df_wiraswasta[df_wiraswasta['Program Studi']==var]['Di Provinsi manakah perusahaan anda berada?'].value_counts()
+  province=province[0:10]
   print(type(province))
   ax2.barh(province.keys(),province.values, color='red')
   plt.yticks(fontsize=11)
-  plt.xlim(0,400)
+  # plt.xlim(0,500)
   _=[ax2.annotate('{}%'.format(round(k/sum(province.values)*100,1)),(k,i)) for i,k in enumerate(province.values)]
   for spine in ['top', 'right', 'left']:
     ax2.spines[spine].set_visible(False)

@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import pandas as pd
-import numpy as np
+from gen_datvis import filtering_tempat_wiraswasta, filtering_pdloc_wiraswasta, tempat_wiraswasta
 
 def custom_subheading(text):
     # Definisikan CSS inline untuk menyesuaikan tampilan teks
@@ -118,7 +117,7 @@ def universitas(keterangan):
             st.image('fig/level-motivasi-tidak-bekerja-univ.png')
         
     elif keterangan == "Wiraswasta":
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
             'Frekuensi', 'Sebaran Sektor Pekerjaan', 'Sebaran Kesesuaian Tingkat Pendidikan',
             'Sebaran Gaji', 'Sebaran Posisi Jabatan', 'Waktu Tunggu', 'Tempat Wirausaha',
             'Status Perusahaan (Hukum/NonHukum)', 'Status Perusahaan (Nasional/Multi)',
@@ -196,6 +195,11 @@ def universitas(keterangan):
             df = df.rename(columns={"index": "Nama Perusahaan/Usaha", "Nama Perusahaan/Usaha Anda ? (F5b)": "Jumlah"})
             st.write("Nama perusahaan wiraswasta dan banyaknya alumni yang bekerja level universitas")
             st.dataframe(df)
+
+        with tab12:
+            df_w=filtering_tempat_wiraswasta(st.session_state['new_dataframe'])
+            pdloc=filtering_pdloc_wiraswasta(df_w)
+            tempat_wiraswasta(df_w, pdloc)
 
     elif keterangan == "Survey Pengguna":
         custom_subheading("Survey Pengguna")

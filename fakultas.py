@@ -138,7 +138,7 @@ def fakultas(options_faculty, option_keterangan):
             df = df.rename(columns={"index": "Nama Perusahaan/Usaha", "Nama Perusahaan/Usaha Anda ? (F5b)": "Jumlah"})
             st.write("Nama wiraswasta dan banyaknya alumni yang bekerja disana berdasarkan fakultas {}".format(options_faculty))
             st.dataframe(df)
-
+            
         with tab12:
             if st.session_state['new_dataframe'] is not None:
                 data = st.session_state['new_dataframe']
